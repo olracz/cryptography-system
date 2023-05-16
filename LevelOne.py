@@ -18,8 +18,7 @@ class CLevelOneEncryption:
         xor_key = self.__XOR_Key * len(caesar_text)
 
         for i, char in enumerate(caesar_text):
-            print(xor_key[i & len(xor_key)])
-            c1 = chr(char ^ ord(xor_key[i & len(xor_key)]))
+            c1 = chr((ord(char) ^ ord(xor_key[i & len(xor_key)])))
             result += c1
         return result
 
@@ -35,8 +34,3 @@ class CLevelOneEncryption:
             decrypted_caesar = chr(ord(char) - self.__Caesar_shift)
 
         return decrypted_caesar
-
-
-
-
-
