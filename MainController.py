@@ -1,5 +1,6 @@
-from LevelOne import CLevelOneEncryption
+import sys
 
+from LevelOne import CLevelOneEncryption
 
 class CMainController:
     def __init__(self):
@@ -14,25 +15,24 @@ class CMainController:
             user_choices = input('what to do?:')
             if user_choices == '1':
                 self.handle_user_choices(user_choices, level_one_encryption)
-
             elif user_choices == '2':
                 self.handle_user_choices(user_choices, level_one_encryption)
-            elif user_choices == '3':
-                break
+            elif user_choices =='3':
+                sys.exit()
             else:
-                continue
+                print("Please enter only from choices")
+                print()
 
     def handle_user_choices(self, user_choices, level_one_encryption):
         while True:
-            print('\n3.Exit')
             if user_choices == '1':
                 self.__Text = input('Enter text to encrypt:')
                 e_text = level_one_encryption.encrypt(self.__Text)
+                break
             if user_choices == '2':
                 self.__Text = input('Enter text to decrypt:')
                 e_text = level_one_encryption.decrypt(self.__Text)
-            if self.__Text == '3':
-                exit
+
 
 
 
