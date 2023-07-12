@@ -1,4 +1,5 @@
 import sys
+import base64
 from LevelOne import CLevelOneEncryption
 
 
@@ -29,7 +30,12 @@ class CMainController:
                 if self.__Text == "":
                     continue
                 e_text = level_one_encryption.encrypt(self.__Text)
-                print("Encrypted output:\nW", e_text)
+                binary_format = e_text.encode('utf-8')
+                binary = ' '.join(format(byte, '08b')for byte in binary_format)
+                encode = base64.b64encode(binary_format).decode()
+                print("Encrypted output:\n", e_text)
+                print("Encrypted output binary:\n", binary)
+                print("Base64 encoded output:\n", encode)
                 break
             if user_choices == '2':
                 self.__Text = input('Enter text to decrypt:\n')

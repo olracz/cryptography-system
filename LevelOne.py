@@ -1,8 +1,9 @@
+import base64
 class CLevelOneEncryption:
     def __init__(self):
         self.__Plain_text = ''
-        self.__Prefix = 'Kai-do'
-        self.__Suffix = 'Blackbeard'
+        self.__Prefix = '*@(&%$'
+        self.__Suffix = 'Kp{12]@'
         self.__XOR_Key = 'L'
         self.__Caesar_shift = 5
 
@@ -21,6 +22,7 @@ class CLevelOneEncryption:
             c1 = chr((ord(char) ^ ord(xor_key[i & len(xor_key)])))
             result += c1
         return result
+
 
     def decrypt(self, input_text):
         xor_key1 = self.__XOR_Key * len(input_text)
