@@ -1,30 +1,24 @@
-import base64
+import secrets
 class CLevelTwoEncryption:
 
-    def __init__(self):
-        self.__XOR_Key = 'Helloworld'
+    def __init__(self, key_length=32):
+        self.__XOR_Key: bytes = secrets.token_bytes(key_length)
 
     def encrypt(self, encrypted_text):
-
-        text_bytes = encrypted_text
-        key_bytes = self.__XOR_Key.encode('utf-8')
         result = bytearray()
 
         for i, char in enumerate(encrypted_text):
-            encrypted_byte = text_bytes[i] ^ key_bytes[i % len(key_bytes)]
+            encrypted_byte = encrypted_text[i] ^ self.__XOR_Key[i % len(self.__XOR_Key)]
             result.append(encrypted_byte)
-        print("Not applied by b64: ", result)
-        encoded_result = base64.b64encode(result)
-        return encoded_result
+        print("level 2 encrypt: ", result)
+        return result
 
     def decrypt(self, encrypted_text):
-        decrypted_text = ""
-        xor_key1 = self.__XOR_Key * len(encrypted_text)
 
-        for i, char in enumerate(encrypted_text):
-            c1 = chr(ord(char) ^ ord(xor_key1[i % len(xor_key1)]))
-            decrypted_text += c1
+        decrypted_bytes = bytearray()
 
-        return decrypted_text
+        for i, byte in enumerate(encrypted_text):
+            decrypted_byte = byte ^ self.__XOR_Key[i % len(self.__XOR_Key)]
+            decrypted_bytes.append(decrypted_byte)
 
-
+        return decrypted_bytes
