@@ -1,36 +1,40 @@
-import base64
+import os
+from dotenv import load_dotenv
+
+load_dotenv()
 class CLevelOneEncryption:
     def __init__(self):
         self.__Plain_text = ''
-        self.__Prefix = '*@(&%$'
-        self.__Suffix = 'Kp{12]@'
-        self.__XOR_Key = 'L'
-        self.__Caesar_shift = 5
+        self.__Prefix = os.getenv('PREFIX')
+        self.__Suffix = os.getenv('SUFFIX')
+        self.__XOR_Key = os.getenv('XOR_KEY_LEVEL1')
+        self.__Caesar_shift: int = int(os.getenv('CAESAR_SHIFT'))
 
     def encrypt(self, input_text):
         self.__Plain_text = self.__Prefix + input_text + self.__Suffix
 
         caesar_text = ""
-        result = ""
+        result = bytearray()
 
         for char in self.__Plain_text:
             caesar_text += chr((ord(char) + self.__Caesar_shift) % 256)
 
-        xor_key = self.__XOR_Key * len(caesar_text)
+        text_bytes = caesar_text.encode('utf-8')
+        key_bytes = self.__XOR_Key.encode('utf-8')
 
         for i, char in enumerate(caesar_text):
-            c1 = chr((ord(char) ^ ord(xor_key[i & len(xor_key)])))
-            result += c1
+            encrypted_byte = text_bytes[i] ^ key_bytes[i % len(key_bytes)]
+            result.append(encrypted_byte)
+
         return result
+    def decrypt(self, encrypted_text):
 
-
-    def decrypt(self, input_text):
-        xor_key1 = self.__XOR_Key * len(input_text)
         caesar_text = ""
+        key_bytes = self.__XOR_Key.encode('utf-8')
 
-        for i, char in enumerate(input_text):
-            c1 = chr(ord(char) ^ ord(xor_key1[i % len(xor_key1)]))
-            caesar_text += c1
+        for i, byte in enumerate(encrypted_text):
+            decrypted_byte = byte ^ key_bytes[i % len(key_bytes)]
+            caesar_text += chr(decrypted_byte)
 
         original_text = ""
 
@@ -38,4 +42,5 @@ class CLevelOneEncryption:
             original_text += chr((ord(char) - self.__Caesar_shift) % 256)
 
         decrypted_text = original_text[len(self.__Prefix):-len(self.__Suffix)]
+        print("Decrypted text: ", decrypted_text)
         return decrypted_text

@@ -1,30 +1,41 @@
-import base64
+import os
+from dotenv import load_dotenv
+
+load_dotenv()
+
+class XORCipher:
+
+    @staticmethod
+    def encrypt(plaintext_bytes, xor_key):
+
+        encrypted_bytes = bytearray()
+        for i, byte in enumerate(plaintext_bytes):
+            encrypted_byte = byte ^ xor_key[i % len(xor_key)]
+            encrypted_bytes.append(encrypted_byte)
+
+        return encrypted_bytes
+
+    @staticmethod
+    def decrypt(encrypted_text, xor_key):
+
+        decrypted_bytes = bytearray()
+        for i, byte in enumerate(encrypted_text):
+            decrypted_byte = byte ^ xor_key[i % len(xor_key)]
+            decrypted_bytes.append(decrypted_byte)
+        return decrypted_bytes
+
 class CLevelTwoEncryption:
 
-    def __init__(self):
-        self.__XOR_Key = 'Helloworld'
+    def __init__(self, level=2):
+        xor_key_hex = os.getenv(f'XOR_KEY_LEVEL{level}')
 
-    def encrypt(self, encrypted_text):
+        if xor_key_hex is None:
+            raise ValueError(f'XOR key for level {level} not found in the environment.')
 
-        text_bytes = encrypted_text
-        key_bytes = self.__XOR_Key.encode('utf-8')
-        result = bytearray()
+        self.__XOR_Key = bytes.fromhex(xor_key_hex)
 
-        for i, char in enumerate(encrypted_text):
-            encrypted_byte = text_bytes[i] ^ key_bytes[i % len(key_bytes)]
-            result.append(encrypted_byte)
-        print("Not applied by b64: ", result)
-        encoded_result = base64.b64encode(result)
-        return encoded_result
+    def encrypt(self, encrypted_bytes):
+        return XORCipher.encrypt(encrypted_bytes, self.__XOR_Key)
 
-    def decrypt(self, encrypted_text):
-        decrypted_text = ""
-        xor_key1 = self.__XOR_Key * len(encrypted_text)
-
-        for i, char in enumerate(encrypted_text):
-            c1 = chr(ord(char) ^ ord(xor_key1[i % len(xor_key1)]))
-            decrypted_text += c1
-
-        return decrypted_text
-
-
+    def decrypt(self, input_text):
+        return XORCipher.decrypt(input_text, self.__XOR_Key)

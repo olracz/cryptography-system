@@ -1,26 +1,41 @@
+import os
+from dotenv import load_dotenv
+
+load_dotenv()
+
+class XORCipher:
+
+    @staticmethod
+    def encrypt(plaintext_bytes, xor_key):
+
+        encrypted_bytes = bytearray()
+        for i, byte in enumerate(plaintext_bytes):
+            encrypted_byte = byte ^ xor_key[i % len(xor_key)]
+            encrypted_bytes.append(encrypted_byte)
+
+        return encrypted_bytes
+
+    @staticmethod
+    def decrypt(encrypted_text, xor_key):
+
+        decrypted_bytes = bytearray()
+        for i, byte in enumerate(encrypted_text):
+            decrypted_byte = byte ^ xor_key[i % len(xor_key)]
+            decrypted_bytes.append(decrypted_byte)
+        return decrypted_bytes
 
 class CLevelThreeEncryption:
 
-    def __init__(self):
-        self.__XOR_Key = 'Helloworld'
+    def __init__(self, level=3):
+        xor_key_hex = os.getenv(f'XOR_KEY_LEVEL{level}')
 
-    def encrypt(self, encrypted_text):
-        key_bytes = self.__XOR_Key.encode('utf-8')
-        result = bytearray()
+        if xor_key_hex is None:
+            raise ValueError(f'XOR key for level {level} not found in the environment.')
 
-        for i, char in enumerate(encrypted_text):
-            encrypted_byte = encrypted_text[i] ^ key_bytes[i % len(key_bytes)]
-            result.append(encrypted_byte)
+        self.__XOR_Key = bytes.fromhex(xor_key_hex)
 
-        return result
+    def encrypt(self, encrypted_bytes):
+        return XORCipher.encrypt(encrypted_bytes, self.__XOR_Key)
 
-    def decrypt(self, encrypted_text):
-
-        key_bytes = self.__XOR_Key.encode('utf-8')
-        decrypted_bytes = bytearray()
-
-        for i, byte in enumerate(encrypted_text):
-            decrypted_byte = byte ^ key_bytes[i % len(key_bytes)]
-            decrypted_bytes.append(decrypted_byte)
-
-        return decrypted_bytes
+    def decrypt(self, input_text):
+        return XORCipher.decrypt(input_text, self.__XOR_Key)
