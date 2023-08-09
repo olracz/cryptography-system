@@ -35,7 +35,6 @@ class CLevelFiveEncryption:
 
         self.__XOR_Key = bytes.fromhex(xor_key_hex)
 
-
     def encrypt(self, encrypted_bytes):
         return XORCipher.encrypt(encrypted_bytes, self.__XOR_Key)
 
