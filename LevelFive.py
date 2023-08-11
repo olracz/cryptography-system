@@ -13,7 +13,7 @@ class XORCipher:
             encrypted_bytes.append(encrypted_byte)
 
         encoded_result = base64.b64encode(encrypted_bytes).decode()
-        print(encoded_result)
+        print("Encoded result: ", encoded_result)
         return encoded_result
 
     @staticmethod
@@ -24,6 +24,7 @@ class XORCipher:
         for i, byte in enumerate(decoded_bytes):
             decrypted_byte = byte ^ xor_key[i % len(xor_key)]
             decrypted_bytes.append(decrypted_byte)
+
         return decrypted_bytes
 
 class CLevelFiveEncryption:

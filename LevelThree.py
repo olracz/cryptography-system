@@ -22,6 +22,7 @@ class XORCipher:
         for i, byte in enumerate(encrypted_text):
             decrypted_byte = byte ^ xor_key[i % len(xor_key)]
             decrypted_bytes.append(decrypted_byte)
+
         return decrypted_bytes
 
 class CLevelThreeEncryption:
