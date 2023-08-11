@@ -32,6 +32,7 @@ class CMainController:
             if user_choices == '1':
 
                 generate_and_store_keys()
+
                 self.handle_user_choices(user_choices, level_one_encryption, level_two_encryption,
                                          level_three_encryption, level_four_encryption, level_five_encryption)
             elif user_choices == '2':
@@ -66,8 +67,8 @@ class CMainController:
                 e_text_three = level_three_encryption.decrypt(e_text_four)
                 e_text_two = level_two_encryption.decrypt(e_text_three)
                 e_text_one = level_one_encryption.decrypt(e_text_two)
-
                 print("Decrypted output:\n", e_text_one)
+
                 generate_and_store_keys()
                 break
 

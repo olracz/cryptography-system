@@ -1,4 +1,5 @@
 # created by virtualenv automatically
+
 generate_key_script.py
 .env
 
@@ -6,4 +7,5 @@ generate_key_script.py
 .idea/
 __pycache__/
 venv/
+
 
