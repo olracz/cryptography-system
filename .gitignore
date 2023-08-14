@@ -2,3 +2,7 @@
 
 .env
 generate_key_script.py
+
+.idea/
+__pycache__/
+venv/
