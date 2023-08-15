@@ -4,6 +4,8 @@ from dotenv import load_dotenv
 
 # Load the .env file from the root directory
 load_dotenv()
+
+
 class XORCipher:
     @staticmethod
     def encrypt(plaintext_bytes, xor_key):
@@ -12,13 +14,13 @@ class XORCipher:
             encrypted_byte = byte ^ xor_key[i % len(xor_key)]
             encrypted_bytes.append(encrypted_byte)
 
-        encoded_result = base64.b64encode(encrypted_bytes).decode()
+        encoded_result = base64.urlsafe_b64encode(encrypted_bytes).decode()
         print("Encoded result: ", encoded_result)
         return encoded_result
 
     @staticmethod
     def decrypt(input_text, xor_key):
-        decoded_bytes = base64.b64decode(input_text)
+        decoded_bytes = base64.urlsafe_b64decode(input_text)
 
         decrypted_bytes = bytearray()
         for i, byte in enumerate(decoded_bytes):
@@ -26,6 +28,7 @@ class XORCipher:
             decrypted_bytes.append(decrypted_byte)
 
         return decrypted_bytes
+
 
 class CLevelFiveEncryption:
     def __init__(self, level=5):

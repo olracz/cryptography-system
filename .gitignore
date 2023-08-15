@@ -2,6 +2,7 @@
 
 generate_key_script.py
 .env
+project_logs.log
 
 
 .idea/
