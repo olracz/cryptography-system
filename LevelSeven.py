@@ -34,9 +34,9 @@ class XORCipher:
 
         return decrypted_bytes
 
-class CLevelFiveEncryption:
+class CLevelSevenEncryption:
 
-    def __init__(self, level=5):
+    def __init__(self, level=7):
         xor_key_hex = os.getenv(f'XOR_KEY_LEVEL{level}')
 
         if xor_key_hex is None:
@@ -46,10 +46,10 @@ class CLevelFiveEncryption:
 
     def encrypt(self, encrypted_bytes):
         encrypted_text = XORCipher.encrypt(encrypted_bytes, self.__XOR_Key)
-        print("E_text5: ", encrypted_text)
+        print("E_text7: ", encrypted_text)
         return encrypted_text
 
     def decrypt(self, encrypted_text):
         decrypted_text = XORCipher.decrypt(encrypted_text, self.__XOR_Key)
-        print("D_text5: ", decrypted_text)
+        print("D_text7: ", decrypted_text)
         return decrypted_text

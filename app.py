@@ -1,5 +1,5 @@
-from flask_cors import CORS
 from flask import Flask, request, jsonify
+from flask_cors import CORS
 from MainController import CMainController
 
 import logging
@@ -9,11 +9,9 @@ import sys
 app = Flask(__name__)
 CORS(app)
 
+
 # Define a function to configure logging
 def configure_logging():
-    # (Your logging configuration code here, as before...)
-
-# Rest of your Flask code...
 
     logger = logging.getLogger('flask_app')
     logger.setLevel(logging.DEBUG)
@@ -39,15 +37,20 @@ def configure_logging():
 
     return logger
 
+
 # Configure logging
 logger = configure_logging()
 
 main_controller = CMainController()
 
-@app.route('/encrypt', methods=['GET'])
+
+@app.route('/encrypt', methods=['POST'])
 def encrypt_message():
     try:
-        message = request.args.get('message')
+        if request.content_type != "application/json":
+            return jsonify({'error': 'Wrong content-type'}), 400
+        data = request.get_json()
+        message = data.get('message')
 
         logger.debug("Received request with message: %s", message)
 
@@ -60,14 +63,19 @@ def encrypt_message():
             'encrypted_message': encrypted_message
         }
         return jsonify(response), 200
+
     except Exception as e:
         logger.error("An error occurred: %s", str(e))
         return jsonify({'error': 'An error occurred'}), 500
 
-@app.route('/decrypt', methods=['GET'])
+
+@app.route('/decrypt', methods=['POST'])
 def decrypt_message():
     try:
-        encrypted_text = request.args.get('encrypted_text')
+        if request.content_type != "application/json":
+            return jsonify({'error': 'Wrong content-type'}), 400
+        data = request.get_json()
+        encrypted_text = data.get('encrypted_text')
 
         logger.debug("Received request with encrypted text: %s", encrypted_text)
 
@@ -80,9 +88,11 @@ def decrypt_message():
             'original_text': original_text
         }
         return jsonify(response), 200
+
     except Exception as e:
         logger.error("An error occurred: %s", str(e))
         return jsonify({'error': 'An error occurred'}), 500
 
+
 if __name__ == '__main__':
-    app.run(debug=True)
+    app.run(host='0.0.0.0', port=8080, debug=True)

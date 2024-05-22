@@ -1,7 +1,17 @@
 import os
+import logging
 from dotenv import load_dotenv
 
 load_dotenv()
+
+
+logging.basicConfig(
+    filename='project_logs.log',  # Specify the log file
+    level=logging.ERROR,  # Set the logging level to ERROR or higher
+    format='%(asctime)s - %(name)s - %(levelname)s - %(message)s'  # Specify log message format
+)
+
+
 
 class XORCipher:
 
@@ -36,7 +46,11 @@ class CLevelTwoEncryption:
         self.__XOR_Key = bytes.fromhex(xor_key_hex)
 
     def encrypt(self, encrypted_bytes):
-        return XORCipher.encrypt(encrypted_bytes, self.__XOR_Key)
+        encrypted_text = XORCipher.encrypt(encrypted_bytes, self.__XOR_Key)
+        print("E_text2: ", encrypted_text)
+        return encrypted_text
 
-    def decrypt(self, input_text):
-        return XORCipher.decrypt(input_text, self.__XOR_Key)
+    def decrypt(self, encrypted_text):
+        decrypted_text = XORCipher.decrypt(encrypted_text, self.__XOR_Key)
+        print("D_text2: ", decrypted_text)
+        return decrypted_text

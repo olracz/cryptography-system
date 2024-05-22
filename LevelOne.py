@@ -4,7 +4,14 @@ from dotenv import load_dotenv
 
 load_dotenv()
 
-logging.basicConfig(level=logging.DEBUG, format='%(levelname)s: %(message)s')
+
+logging.basicConfig(
+    filename='project_logs.log',  # Specify the log file
+    level=logging.ERROR,  # Set the logging level to ERROR or higher
+    format='%(asctime)s - %(name)s - %(levelname)s - %(message)s'  # Specify log message format
+)
+
+
 class EncryptionUtils:
     def __init__(self, xor_key, caesar_shift, prefix, suffix):
         self.__xor_key = xor_key
@@ -49,10 +56,17 @@ class CLevelOneEncryption:
         prefix = os.getenv('PREFIX', '')
         suffix = os.getenv('SUFFIX', '')
 
+        if xor_key_hex is None:
+            raise ValueError(f'XOR key for level {level} not found in the environment.')
+
         self.__encryption_utils = EncryptionUtils(xor_key_bytes, caesar_shift, prefix, suffix)
 
     def encrypt(self, input_text):
-        return self.__encryption_utils.encrypt(input_text)
+        encrypted_text = self.__encryption_utils.encrypt(input_text)
+        print("E_text1: ", encrypted_text)
+        return encrypted_text
 
     def decrypt(self, encrypted_text):
-        return self.__encryption_utils.decrypt(encrypted_text)
+        decrypted_text = self.__encryption_utils.decrypt(encrypted_text)
+        print("D_text1: ", decrypted_text)
+        return decrypted_text
