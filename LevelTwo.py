@@ -1,39 +1,16 @@
 import os
 import logging
 from dotenv import load_dotenv
-
+from xor_cipher import XORCipher
 load_dotenv()
 
 
 logging.basicConfig(
     filename='project_logs.log',  # Specify the log file
     level=logging.ERROR,  # Set the logging level to ERROR or higher
-    format='%(asctime)s - %(name)s - %(levelname)s - %(message)s'  # Specify log message format
+    format='%(asctime)s  - %(levelname)s - %(message)s'  # Specify log message format
 )
 
-
-
-class XORCipher:
-
-    @staticmethod
-    def encrypt(plaintext_bytes, xor_key):
-
-        encrypted_bytes = bytearray()
-        for i, byte in enumerate(plaintext_bytes):
-            encrypted_byte = byte ^ xor_key[i % len(xor_key)]
-            encrypted_bytes.append(encrypted_byte)
-
-        return encrypted_bytes
-
-    @staticmethod
-    def decrypt(encrypted_text, xor_key):
-
-        decrypted_bytes = bytearray()
-        for i, byte in enumerate(encrypted_text):
-            decrypted_byte = byte ^ xor_key[i % len(xor_key)]
-            decrypted_bytes.append(decrypted_byte)
-
-        return decrypted_bytes
 
 class CLevelTwoEncryption:
 

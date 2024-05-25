@@ -1,7 +1,6 @@
 from flask import Flask, request, jsonify
 from flask_cors import CORS
 from MainController import CMainController
-
 import logging
 from logging.handlers import RotatingFileHandler
 import sys
@@ -16,24 +15,20 @@ def configure_logging():
     logger = logging.getLogger('flask_app')
     logger.setLevel(logging.DEBUG)
 
-    # Define separate formats for console and log file
-    console_format = '%(levelname)s: %(message)s'
-    log_file_format = '%(asctime)s - %(levelname)s - %(filename)s:%(lineno)d - %(message)s'
-
-    # Create a console handler with the console format
-    console_handler = logging.StreamHandler(sys.stdout)
-    console_handler.setLevel(logging.DEBUG)
-    console_formatter = logging.Formatter(console_format)
-    console_handler.setFormatter(console_formatter)
-    logger.addHandler(console_handler)
+    # Define log format
+    log_format = '%(asctime)s - %(levelname)s - %(message)s'
+    log_formatter = logging.Formatter(log_format)
 
     # Create a file handler with the log file format
     log_filename = 'project_logs.log'
     file_handler = RotatingFileHandler(log_filename, maxBytes=5 * 1024 * 1024, backupCount=3)
     file_handler.setLevel(logging.DEBUG)
-    log_formatter = logging.Formatter(log_file_format)
     file_handler.setFormatter(log_formatter)
     logger.addHandler(file_handler)
+
+    # Filter out Werkzeug server log messages
+    werkzeug_logger = logging.getLogger('werkzeug')
+    werkzeug_logger.setLevel(logging.ERROR)  # Set level to ERROR to filter out INFO and WARNING messages
 
     return logger
 
